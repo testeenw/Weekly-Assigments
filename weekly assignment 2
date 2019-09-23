@@ -1,0 +1,31 @@
+1) To determine the number of protein sequences in the chloroplast:
+[testeenw@colossus handling_sequence_data]$ grep '>' coffee_chloroplast.fasta | wc -l
+85
+
+#grep looks for the '>' sign in the coffee_chloroplast file, this can be used as the > indicates a new name and protein in a fasta file.
+Grep alone would print all the lines with '>' , however, pipped with wc -l, it now counts the amount of lines in the output. 
+
+2) To create a file of all the names of protein sequences in Coffee plant's chloroplast sequences:
+[testeenw@colossus handling_sequence_data]$ grep '>' coffee_chloroplast.fasta > names_of_Coffee_chloroplast.txt
+
+#Using the same grep command as before, we can not take that output and inscribe it into a new file named names_of _Coffee_chloroplast
+
+3) How many photosystem subunits are present in the chromosome?
+[testeenw@colossus handling_sequence_data]$ grep 'photosystem' coffee_chloroplast.fasta | grep 'subunit'| wc -l
+3
+
+# once again using the grep command we can look at the occurances of photosystem. 
+This time we would like to narrow it down even more to instances of subunits in order to count those. Thus we can pipe it with another grep command, this time looking for subunit.
+As we want a count of the number of subunits rather than the name we can pipe the previous commands with wordcount and count the lines as a result.
+
+4) Make a .fasta file with the sequence for ATP synthase CF1 beta subunit protein sequence
+[testeenw@colossus handling_sequence_data]$ grep 'ATP synthase CF1 beta subunit' coffee_chloroplast.fasta
+[testeenw@colossus handling_sequence_data]$ grep -A 1 'CoarCp028' coffee_chloroplast.fasta > ATP_synthase_CF1_betasub_sequence.fasta
+
+# This one was a little more tricky and required some google action. First using the grep command in the fasta file, I pulled out the full id of the ATP synthase CF1 beta subunit.
+Then using the grep -A 1 command with the first part of the protein ID I was able to pull the name and sequence into a new fasta file.
+If you really only want the code you could use: 
+
+[testeenw@colossus handling_sequence_data]$ tail -1 > ATP_synthase_CF1_betasub_sequence.fasta
+
+# This would overwrite the file and only insert the code as it is the first line on the bottom. 
