@@ -12,11 +12,13 @@ Grep alone would print all the lines with '>' , however, pipped with wc -l, it n
 
 3) How many photosystem subunits are present in the chromosome?
 [testeenw@colossus handling_sequence_data]$ grep 'photosystem' coffee_chloroplast.fasta | grep 'subunit'| wc -l
-3
+3 that specify "subunit". 
+22 different proteins that just specify "photosystem" (omit |grep 'subunit')
 
 # once again using the grep command we can look at the occurances of photosystem. 
 This time we would like to narrow it down even more to instances of subunits in order to count those. Thus we can pipe it with another grep command, this time looking for subunit.
 As we want a count of the number of subunits rather than the name we can pipe the previous commands with wordcount and count the lines as a result.
+The question was a bit unclear if it specifically wanted the proteins that were categorized as subunits or all proteins that are part of the photoystem in the chromosome, in case we want all the photosystem proteins in this chromosome just omit the second grep command.
 
 4) Make a .fasta file with the sequence for ATP synthase CF1 beta subunit protein sequence
 [testeenw@colossus handling_sequence_data]$ grep 'ATP synthase CF1 beta subunit' coffee_chloroplast.fasta
