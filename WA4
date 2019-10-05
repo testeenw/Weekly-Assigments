@@ -18,4 +18,4 @@ Quality assesment
   fastqc C_Ferri_R1.fastq.gz
   fastqc C_Ferri_R2.fastq.gz
  Then remove any present adaptors 
-  cutadapt -q 20,20 -a CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -A CTGTCTCTTATACACATCTGACGCTGCCGACGA -m 50 --max-n 0 -o T1_R1.cutadapt.fastq -p T1_R2.cutadapt.fastq C_Ferri_R1.fastq.gz C_Ferri_R2.fastq.gz
+  cutadapt -q 20,20 -a CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -A CTGTCTCTTATACACATCTGACGCTGCCGACGA -m 50 --max-n 0 -o C_Ferri_R1.cutadapt.fastq -p C_Ferri_R2.fastq C_Ferri_R1.fastq.gz C_Ferri_R2.fastq.gz
