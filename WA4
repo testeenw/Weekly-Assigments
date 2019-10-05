@@ -1,13 +1,13 @@
 Made new file in trimming called WA4
 Downloaded : 
-   gdown.pl https://drive.google.com/file/d/1PWWO5wVRRThLBXXEZjyWZHIb9udVcnCS/edit C_Ferri_R1.fastq.gz
-   gdown.pl https://drive.google.com/file/d/1mZFvpSIctuBihkOlQX9vhrkxng3cRmvK/edit C_Ferri_R2.fastq.gz
+   gdown.pl https://drive.google.com/file/d/1PWWO5wVRRThLBXXEZjyWZHIb9udVcnCS/edit C_Ferri_R1.fastq
+   gdown.pl https://drive.google.com/file/d/1mZFvpSIctuBihkOlQX9vhrkxng3cRmvK/edit C_Ferri_R2.fastq
 Also efetch: 
    efetch -db=nucleotide -id=CP000141.1 -format=gb>C.hydrogenogormans.gbk
 This will act as the reference genome.
 First this genome has to be turned into a fasta file (typo fixed as well)
   python genbank_to_fasta.py C.hydrogenogormans.gbk C.hydrogenoformans.fasta
-#Then the downloaded genomes need to be unzipped and turned into fastq files
+#problems with this
   
 Now map the reads to the reference. First build the reference genome 
    bowtie2-build C.hydrogenoformans.fasta C.hydro
@@ -18,4 +18,18 @@ Quality assesment
   fastqc C_Ferri_R1.fastq.gz
   fastqc C_Ferri_R2.fastq.gz
  Then remove any present adaptors 
-  cutadapt -q 20,20 -a CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -A CTGTCTCTTATACACATCTGACGCTGCCGACGA -m 50 --max-n 0 -o C_Ferri_R1.cutadapt.fastq -p C_Ferri_R2.fastq C_Ferri_R1.fastq.gz C_Ferri_R2.fastq.gz
+  cutadapt -q 20,20 -a CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -A CTGTCTCTTATACACATCTGACGCTGCCGACGA -m 50 --max-n 0 -o C_Ferri_R1.cutadapt.fastq -p C_Ferri_R2.fastq C_Ferri_R1.fastq C_Ferri_R2.fastq
+# not working as error due to different number of reads is thrown
+   tried: cutadapt -q 20,20 -a CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -m 50 --max-n 0 -o C_Ferri_R1.cutadapt.fastq C_Ferri_R1.fastq
+# here it came out that somwe how the R2 fastq file was empty
+   tried: cutadapt -q 20,20 -a CTGTCTCTTATACACATCTGACGCTGCCGACGA -m 50 --max-n 0 -o C_Ferri_R2.cutadapt.fastq C_Ferri_R2.fastq
+
+
+Answers to questions: 
+Use Fastq to assess the quality of each of these files.
+   Were these reads of high quality? R1 - yes. The per base sequence quality is very good, as well as the Phred scores overall (with the mean around 37)
+                                     R2 - yes this one is high queality too. It has a little more spread in it's phred scores, but on average it is still very high
+   Was trimming required? For R1 adapter trimming could be tried to further purify the data, but it is not as needed as in other cases. For R2 there would also be a limited effect by trimming but there is possibly more than in R1
+Use cutadapt to remove adaptors
+   How many reads contained adaptors for each file?  R1 -> 18,001 
+                                                     R2 -> 14,855 
