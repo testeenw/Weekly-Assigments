@@ -1,4 +1,21 @@
 Made new file in trimming called WA4
 Downloaded : 
-  [testeenw@colossus WA4]$ gdown.pl https://drive.google.com/file/d/1PWWO5wVRRThLBXXEZjyWZHIb9udVcnCS/edit C_Ferri_R1.fastq.gz
-   [testeenw@colossus WA4]$ gdown.pl https://drive.google.com/file/d/1mZFvpSIctuBihkOlQX9vhrkxng3cRmvK/edit C_Ferri_R2.fastq.gz
+   gdown.pl https://drive.google.com/file/d/1PWWO5wVRRThLBXXEZjyWZHIb9udVcnCS/edit C_Ferri_R1.fastq.gz
+   gdown.pl https://drive.google.com/file/d/1mZFvpSIctuBihkOlQX9vhrkxng3cRmvK/edit C_Ferri_R2.fastq.gz
+Also efetch: 
+   efetch -db=nucleotide -id=CP000141.1 -format=gb>C.hydrogenogormans.gbk
+This will act as the reference genome.
+First this genome has to be turned into a fasta file (typo fixed as well)
+  python genbank_to_fasta.py C.hydrogenogormans.gbk C.hydrogenoformans.fasta
+#Then the downloaded genomes need to be unzipped and turned into fastq files
+  
+Now map the reads to the reference. First build the reference genome 
+   bowtie2-build C.hydrogenoformans.fasta C.hydro
+Then map the reads
+  bowtie2 -x C.hydro -1 C_Ferri_R1.fastq.gz -2 C_Ferri_R2.fastq.gz -S Z2901.sam
+  
+Quality assesment 
+  fastqc C_Ferri_R1.fastq.gz
+  fastqc C_Ferri_R2.fastq.gz
+ Then remove any present adaptors 
+  cutadapt -q 20,20 -a CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -A CTGTCTCTTATACACATCTGACGCTGCCGACGA -m 50 --max-n 0 -o T1_R1.cutadapt.fastq -p T1_R2.cutadapt.fastq C_Ferri_R1.fastq.gz C_Ferri_R2.fastq.gz
