@@ -5,14 +5,14 @@ Downloaded :
 Also efetch: 
    efetch -db=nucleotide -id=CP000141.1 -format=gb>C.hydrogenogormans.gbk
 This will act as the reference genome.
-First this genome has to be turned into a fasta file (typo fixed as well)
+First this genome has to be turned into a fasta file (typo fixed as well). This requires the install of biopython and the genbank_to_fasta.py package
   python genbank_to_fasta.py C.hydrogenogormans.gbk C.hydrogenoformans.fasta
-#problems with this
+
   
 Now map the reads to the reference. First build the reference genome 
-   bowtie2-build C.hydrogenoformans.fasta C.hydro
+   bowtie2-build C.hydrogenoformans.fasta C.hydr
 Then map the reads
-  bowtie2 -x C.hydro -1 C_Ferri_R1.fastq.gz -2 C_Ferri_R2.fastq.gz -S Z2901.sam
+  bowtie2 -x C.hydr -1 C_Ferri_R1.fastq -2 C_Ferri_R2.fastq -S Z2901.sam
   
 Quality assesment 
   fastqc C_Ferri_R1.fastq.gz
@@ -29,7 +29,10 @@ Answers to questions:
 Use Fastq to assess the quality of each of these files.
    Were these reads of high quality? R1 - yes. The per base sequence quality is very good, as well as the Phred scores overall (with the mean around 37)
                                      R2 - yes this one is high queality too. It has a little more spread in it's phred scores, but on average it is still very high
-   Was trimming required? For R1 adapter trimming could be tried to further purify the data, but it is not as needed as in other cases. For R2 there would also be a limited effect by trimming but there is possibly more than in R1
-Use cutadapt to remove adaptors
+   Was trimming required? For R1 and R2 adapter trimming could be tried to further purify the data, as there are a significant amount of overrepreented sequences that could be sigle end primers.
+     Use cutadapt to remove adaptors
    How many reads contained adaptors for each file?  R1 -> 18,001 
                                                      R2 -> 14,855 
+Use bowtie2 to map the C. ferrireducens read to the reference.
+   What percentage of the reads mapped to the reference genome? 0
+   What percentage of reads did not map to the reference genome?  100                                                   
