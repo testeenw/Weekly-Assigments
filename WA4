@@ -3,36 +3,39 @@ Downloaded :
    gdown.pl https://drive.google.com/file/d/1PWWO5wVRRThLBXXEZjyWZHIb9udVcnCS/edit C_Ferri_R1.fastq
    gdown.pl https://drive.google.com/file/d/1mZFvpSIctuBihkOlQX9vhrkxng3cRmvK/edit C_Ferri_R2.fastq
 Also efetch: 
-   efetch -db=nucleotide -id=CP000141.1 -format=gb>C.hydrogenogormans.gbk
-This will act as the reference genome.
-First this genome has to be turned into a fasta file (typo fixed as well). This requires the install of biopython and the genbank_to_fasta.py package
-  python genbank_to_fasta.py C.hydrogenogormans.gbk C.hydrogenoformans.fasta
+   efetch -db=nucleotide -id=CP000141.1 -format=fasta>C.hydrogenoformans.T2.fasta
+##This will act as the reference genome. In fasta format
+
 
   
 Now map the reads to the reference. First build the reference genome 
-   bowtie2-build C.hydrogenoformans.fasta C.hydr
+    bowtie2-build C.hydrogenformans.T2.fasta C.hydrT2
 Then map the reads
-  bowtie2 -x C.hydr -1 C_Ferri_R1.fastq -2 C_Ferri_R2.fastq -S Z2901.sam
+   bowtie2 -x C.hydrT2 -1 C_Ferri_R1.fastq -2 C_Ferri_R2.fastq -S Z2901T2.sam
+  
   
 Quality assesment 
   fastqc C_Ferri_R1.fastq.gz
   fastqc C_Ferri_R2.fastq.gz
  Then remove any present adaptors 
-  cutadapt -q 20,20 -a CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -A CTGTCTCTTATACACATCTGACGCTGCCGACGA -m 50 --max-n 0 -o C_Ferri_R1.cutadapt.fastq -p C_Ferri_R2.fastq C_Ferri_R1.fastq C_Ferri_R2.fastq
-# not working as error due to different number of reads is thrown
-   tried: cutadapt -q 20,20 -a CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -m 50 --max-n 0 -o C_Ferri_R1.cutadapt.fastq C_Ferri_R1.fastq
-# here it came out that somwe how the R2 fastq file was empty
-   tried: cutadapt -q 20,20 -a CTGTCTCTTATACACATCTGACGCTGCCGACGA -m 50 --max-n 0 -o C_Ferri_R2.cutadapt.fastq C_Ferri_R2.fastq
+  With given sequence in class: cutadapt -q 20,20 -a CTGTCTCTTATACACATCTCCGAGCCCACGAGAC -A CTGTCTCTTATACACATCTGACGCTGCCGACGA -m 50 --max-n 0 -o C_Ferri_R1T2.cutadapt.fastq -p C_Ferri_R2T2.fastq C_Ferri_R1.fastq C_Ferri_R2.fastq
+  With sequences identified by the fastqc, using the two most abundant:  cutadapt -q 20,20 -a GATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATATCGTATGCCGT -A GATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCG -m 50 --max-n 0 -o C_Ferri_R1T2.cutadapt.fastq -p C_Ferri_R2T2.fastq C_Ferri_R1.fastq C_Ferri_R2.fastq
+Quality assesment was ran again
+   fastqc C_Ferri_R1T2.cutadapt.fastq
+   fastqc C_Ferri_R2T2.cutadapt.fastq
+After this the adaptcut files were remapped using bowtie 2
+   bowtie2 -x C.hydrT2 -1 C_Ferri_R1T2.cutadapt.fastq -2 C_Ferri_R2T2.cutadapt.fastq -S Z2901T2.cut.sam   
 
 
 Answers to questions: 
 Use Fastq to assess the quality of each of these files.
-   Were these reads of high quality? R1 - yes. The per base sequence quality is very good, as well as the Phred scores overall (with the mean around 37)
-                                     R2 - yes this one is high queality too. It has a little more spread in it's phred scores, but on average it is still very high
+   Were these reads of high quality? R1 - yes. The per base sequence quality is very good, as well as the Phred scores overall (with the mean around 37). However there are some issues with overrepresented sequences
+                                     R2 - yes this one is high queality too. It has a little more spread in it's phred scores, but on average it is still very high. Here there are also some issues with overrepresented sequences.
    Was trimming required? For R1 and R2 adapter trimming could be tried to further purify the data, as there are a significant amount of overrepreented sequences that could be sigle end primers.
-     Use cutadapt to remove adaptors
-   How many reads contained adaptors for each file?  R1 -> 18,001 
-                                                     R2 -> 14,855 
+                          After trimming the adaptors, the fastqc file no longer showed issues with the overrepresented sequenes, however, the program does suggest further analysis for sequence lenght distributions for both files.
+Use cutadapt to remove adaptors
+   How many reads contained adaptors for each file?  Using orignal sequence: R1 -> 18,001    R2 -> 14,855 
+                                                     Using sequences identified through fastcq R1 -> 62,221    R2 -> 48,486 
 Use bowtie2 to map the C. ferrireducens read to the reference.
-   What percentage of the reads mapped to the reference genome? 0
-   What percentage of reads did not map to the reference genome?  100                                                   
+   What percentage of the reads mapped to the reference genome? The average alignment rate before the cutadapt was 74.52%. After the adaptor trimming the average alignment rate went up to 78.66%
+                                                
