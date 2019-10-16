@@ -1,0 +1,16 @@
+First download the unknown thermophile file from github
+  wget https://github.com/stechtmann/BL4300-5300/raw/master/data/Weekly_Assignment_data/Unk_therm.faa
+Assemble this into a blastable database
+  makeblastdb -in Unk_therm.faa -dbtype prot -title Unk_therm
+Download the sequence of the heatshock protein given for the weekly assigment 
+  wget https://github.com/stechtmann/BL4300-5300/raw/master/data/Weekly_Assignment_data/HSP_prot.fasta
+Now you can blast for the HSP in the series of protein file from the unknown thermophile
+  blastp -db Unk_therm.faa -query HSP_prot.fasta -out HSP_BLAST.txt -outfmt 7
+
+Questions: 
+How many HSPs were found in the unknown organism? 
+  6
+Provide your justification for how many HSPs were in the organism (use information in the BLAST ouput E-value, length, percent ID, etc).
+  5. 
+How many HSP have paralogs?
+Provide a justification for the presence of paralogs.
