@@ -9,8 +9,17 @@ Now you can blast for the HSP in the series of protein file from the unknown the
 
 Questions: 
 How many HSPs were found in the unknown organism? 
-  6
+  Query 1 (sHSP29): 3
+  Query 2 (chaperonin): 1
+  Query 3 (GroEL): 1
+  Query 4 (HSP70): 1
+  Query 5 (HSP90): none
+  Query 6 (reverse gyrase): 1
+  Total possible 7
 Provide your justification for how many HSPs were in the organism (use information in the BLAST ouput E-value, length, percent ID, etc).
-  5. 
+  All the found HSP had an e value of smaller than 4e-14. Which suggest that these matches were unlikely due to just random chance. 
+  Additionally most had a total bit score of over 60. Only 2 of the above had a % identity of around 60
 How many HSP have paralogs?
+  There is likely only one paralog. Which is between NP_418567.1	and Unk_30. These two sequences share over 60% identity and have an e value of 0 with a bit score of 632
+  Paralogs could have been obtained through gene transfer
 Provide a justification for the presence of paralogs.
