@@ -20,6 +20,6 @@ Provide your justification for how many HSPs were in the organism (use informati
   All the found HSP had an e value of smaller than 4e-14. Which suggest that these matches were unlikely due to just random chance. 
   Additionally most had a total bit score of over 60. Only 2 of the above had a % identity of around 60
 How many HSP have paralogs?
-  There is likely only one paralog. Which is between NP_418567.1	and Unk_30. These two sequences share over 60% identity and have an e value of 0 with a bit score of 632
+  There is likely only one paralog. Which is between NP_418567.1 and Unk_30. These two sequences share over 60% identity and have an e value of 0 with a bit score of 632
   Paralogs could have been obtained through gene transfer
-Provide a justification for the presence of paralogs.
+
