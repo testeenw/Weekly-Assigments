@@ -9,17 +9,19 @@ Now you can blast for the HSP in the series of protein file from the unknown the
 
 Questions: 
 How many HSPs were found in the unknown organism? 
-  Query 1 (sHSP29): 3
-  Query 2 (chaperonin): 1
-  Query 3 (GroEL): 1
-  Query 4 (HSP70): 1
+  Query 1 (sHSP29): 2 (Unk_1985, Unk_1860 - %ID: ~31, alignment lenght: 72, evalue: 2e-16 & 4e-14, bitscore: 70.1 & 62.8) 
+  Query 2 (chaperonin): 1 (unk_30 - %ID: ~61, alignment lenght: 537, evalue: 0.0, bitscore: 632 )
+  Query 3 (GroEL): 1 (Unk_33 - %ID: ~59, alignment lenght: 92, evalue: 8e-33, bitscore: 109)
+  Query 4 (HSP70): 1 (Unk_1842 - %ID: ~42, alignment lenght: 559, evalue: 7e-138, bitscore: 416)
   Query 5 (HSP90): none
-  Query 6 (reverse gyrase): 1
-  Total possible 7
+  Query 6 (reverse gyrase): 1 (Unk_1970 - %ID: ~33, alignment lenght: 625, evalue: 2e-54, bitscore: 201)
+  Total possible 6
 Provide your justification for how many HSPs were in the organism (use information in the BLAST ouput E-value, length, percent ID, etc).
   All the found HSP had an e value of smaller than 4e-14. Which suggest that these matches were unlikely due to just random chance. 
-  Additionally most had a total bit score of over 60. Only 2 of the above had a % identity of around 60
-How many HSP have paralogs?
-  There is likely only one paralog. Which is between NP_418567.1 and Unk_30. These two sequences share over 60% identity and have an e value of 0 with a bit score of 632
-  Paralogs could have been obtained through gene transfer
+  Additionally most had a total bit score of over 60. Only 2 of the above had a % identity of around 60. 
+  Compared to the chart on the twilight Zone of protein homology, which comes the sequence identity and sequence lenght all these sequences would be in the safe zone regarding protein homology.
+How many HSP have paralogs? Provide a justification for the presence of paralogs.
+  There is likely only one paralog pair. Which is between Unk_1985 and Unk_1860. These two sequences both have a ~30% idenity with the Escherichia coli sHSP20, with a strong e score and bit score. 
+  Paralogous genes diverge from eachother within a species, which would be the E.coli in this case.
+ 
 
