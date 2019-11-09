@@ -1,0 +1,57 @@
+#install needed packages
+install.packages("readr")
+install.packages("tidyverse")
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager") 
+BiocManager::install("DESeq2")
+
+#read in needed packages
+library(readr)
+library(tidyverse)
+library(DESeq2)
+
+#import data
+mycounts <- read_csv("data/WA_counts.csv")
+metadata <- read_csv("data/WA8_Metadata.csv")
+
+#examine the data
+head(mycounts) #data identified as a tibble
+head(metadata) # data also identified as a tibble
+
+#prepare data for DESeq by overwriting data class type
+mycounts <- as.data.frame(mycounts)
+metadata <- as.data.frame(metadata)
+
+#make sure the column names in the count data are the same as in our metadata
+names(mycounts)[-1]
+metadata$id
+names(mycounts)[-1]==metadata$id
+all(names(mycounts)[-1]==metadata$id)
+
+#create DESeq Object
+dds.data <- DESeqDataSetFromMatrix(countData=mycounts, 
+                                   colData=metadata, 
+                                   design=~dex, 
+                                   tidy=TRUE)
+dds.data
+
+#run DESeq
+dds <- DESeq(dds.data)
+
+#gathering results and convert back to tibble
+res <- results(dds, contrast=c("dex","Control","Mutant"), tidy=TRUE)
+res <- tbl_df(res)
+
+#arrange tibble by adjusted p value
+res2 <- arrange(res, padj)
+
+#filter out up regulated in Control cells with the parameters of a adjusted p value of <.05 and a fold change greater than 2
+res3 <- filter(res2, padj<=0.05 & log2FoldChange>=2)
+#filter out up regulated in Mutant cells with same parameters except a fold change of <-2
+res4 <- filter(res2, padj<=0.05 & log2FoldChange<=-2)
+
+
+How many genes are significantly differentially expressed? 2,404
+How many genes are significantly differentially expressed in the Control versus the Mutant? 915
+How many genes are significantly differentially expressed in the Mutant versus the Control? 1489
+What gene is the most highly expressed gene in the Mutant versus the Control? Solyc11g028040.1.1 with a log2FoldChange of -12.08
+What gene is the most highly expressed gene in the Control versus the Mutant? 	Solyc09g089500.2.1 with a log2FoldChange of 9.28
