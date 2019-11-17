@@ -1,0 +1,39 @@
+
+library(readr)
+library(tidyverse)
+library(DESeq2)
+
+#volcano plot 
+#separate positive and negative log2fold changes into control and mutant 
+res2=mutate(res2,DifferentialGeneexpression=ifelse(log2FoldChange<0,"Mutant","Control"))
+
+#actual plot command
+ggplot(res2) +
+  geom_point(aes(x=log2FoldChange, y=-log10(padj), color=DifferentialGeneExpression)) +
+  xlab("log2 fold change") + 
+  ylab("-log10 adjusted p-value") +
+  theme(legend.position = "none",
+        plot.title = element_text(size = rel(1.5), hjust = 0.5),
+        axis.title = element_text(size = rel(1.25)))  +
+  scale_color_manual(values=c("blue", "red", "grey"))
+  theme_bw()
+
+  
+
+# plot counts highest fold change
+
+plotCounts(dds, gene="Solyc09g089500.2.1", intgroup="dex", returnData=TRUE) %>%
+  ggplot(aes(dex,count))+
+  geom_boxplot()+
+  geom_point()
+
+# box plot lowest fold change
+
+plotCounts(dds, gene="Solyc11g028040.1.1", intgroup="dex", returnData=TRUE) %>%
+  ggplot(aes(dex,count))+
+  geom_boxplot()+
+  geom_point()
+
+#An MA. MA plots are log10 of the mean expression (baseMean) of a gene on the x-axis and log2FoldChange on the y-axis
+
+ggplot(res2, aes(x=log10(baseMean), y=log2FoldChange)) + geom_point()
